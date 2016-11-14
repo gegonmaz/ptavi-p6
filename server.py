@@ -5,6 +5,7 @@ Clase (y programa principal) para un servidor de eco en UDP simple
 """
 
 import socketserver
+import sys
 
 
 class EchoHandler(socketserver.DatagramRequestHandler):
@@ -19,7 +20,15 @@ class EchoHandler(socketserver.DatagramRequestHandler):
             # Leyendo línea a línea lo que nos envía el cliente
             line = self.rfile.read()
             print("El cliente nos manda " + line.decode('utf-8'))
-
+            #Analizamos la linea para ver que metodo nos llega y contestar
+            if argv[2] == 'INVITE':
+                self.wfile.write(b'SIP/2.0 200 Ok\r\n\r\n')
+                self.wfile.write(b'SIP/2.0 100 Trying\r\n\r\n')
+                self.wfile.write(b'SIP/2.0 180 Ring\r\n\r\n')
+            if argv[2] == 'BYE':
+                self.wfile.write(b'SIP/2.0 200 Ok\r\n\r\n') 
+            else:
+                self.wfile.write(b'SIP/2.0 405 Method Not Allowed\r\n\r\n')
             # Si no hay más líneas salimos del bucle infinito
             if not line:
                 break
