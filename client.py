@@ -31,12 +31,6 @@ if str(sys.argv[1]) == 'INVITE':
     # Contenido que vamos a enviar
     LINE = 'INVITE' + ' sip:' + Cliente + '@' + IPServidor + ' SIP/2.0\r\n'
 
-if str(sys.argv[1] == 'BYE':
-    nombreCliente = Cliente
-    # Contenido que vamos a enviar
-    LINE = 'BYE' + ' sip:' + Cliente + '@' + IPServidor + ' SIP/2.0\r\n'
-    print('HASTA PRONTO ' + nombreCliente)
-
 # Creamos el socket, lo configuramos y lo atamos a un servidor/puerto
 my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 my_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -46,7 +40,16 @@ print("Enviando: " + LINE)
 my_socket.send(bytes(LINE, 'utf-8') + b'\r\n')
 data = my_socket.recv(1024)
 
+if data == ('SIP/2.0 ' + '100 Trying', 'SIP/2.0 ' +  '180 Ring' + 'SIP/2.0 ' '200 OK'):
+    LINE = 'ACK' + ' sip:' + Cliente + '@' + IPServidor + ' SIP/2.0\r\n'
 
+if str(sys.argv[1] == 'BYE':
+    nombreCliente = Cliente
+    # Contenido que vamos a enviar
+    LINE = 'BYE' + ' sip:' + Cliente + '@' + IPServidor + ' SIP/2.0\r\n'
+    print('HASTA PRONTO ' + nombreCliente)
+
+# Terminamos la conexion
 print('Recibido -- ', data.decode('utf-8'))
 print("Terminando socket...")
 
