@@ -34,18 +34,18 @@ class EchoHandler(socketserver.DatagramRequestHandler):
                 # INVITE --> tendremos que establecer la llamada(Comunicacion)
                 envio = ("SIP/2.0 100 Trying\r\n\r\nSIP/2.0 180 Ring\r\n\r\n" +
                          "SIP/2.0 200 OK\r\n\r\n")
-                self.wflie.write(bytes(envio, 'utf-8')
+                self.wfile.write(bytes(envio, 'utf-8'))
             elif Mensaje_Cliente[0] == 'ACK':
                 os.system("./mp32rtp -i " + IP_Cliente + " -p 23032 <" + audio)
             elif Mensaje_Cliente[0] == 'BYE':
                 # BYE --> se cierra la comunicación
-                envio=self.wfile.write(b'SIP/2.0 200 Ok\r\n\r\n')
+                envio = self.wfile.write(b'SIP/2.0 200 Ok\r\n\r\n')
             if not Mensaje_Cliente[0] in self.Metodos:
                 # if not Mensaje_Cliente[0] == 'INVITE'|'BYE'|'ACK':
-                envio=self.wfile.write(b'SIP/2.0 405 Method Not Allowed' +
-                                       b'\r\n\r\n')
+                envio = self.wfile.write((b'SIP/2.0 405 Method Not Allowed') +
+                                         (b'\r\n\r\n'))
             else:
-                envio=self.wfile.write(b'SIP/2.0 400 Bad Request\r\n\r\n')
+                envio = self.wfile.write(b'SIP/2.0 400 Bad Request\r\n\r\n')
 
 if __name__ == "__main__":
     # Creamos servidor de eco y escuchamos
@@ -60,18 +60,18 @@ if __name__ == "__main__":
         sys.exit("Usage: python server.py IP port audio_file")
     # Nos guardamos las variables de puerto y direccion IP del servidor
     try:
-        IP_Servidor=sys.argv[1]
-        PUERTO_Servidor=sys.argv[2]
+        IP_Servidor = sys.argv[1]
+        PUERTO_Servidor = sys.argv[2]
         """
         Ademas ahora a parte del puerto y la direccion IP, encontramos
         el archivo de audio que enviamos por RTP
         """
-        Archivo=sys.argv[3]
+        Archivo = sys.argv[3]
     except IndexError:
         sys.exit("Usage: python server.py IP port audio_file")
     # Creamos un servidor y escuchamos
     try:
-        serv=socketserver.UDPServer(("", int(PUERTO_Servidor)), EchoHandler)
+        serv = socketserver.UDPServer(("", int(PUERTO_Servidor)), EchoHandler)
     except ValueError:
         sys.exit('El Puerto necesita un entero')
 
