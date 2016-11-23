@@ -35,9 +35,11 @@ class EchoHandler(socketserver.DatagramRequestHandler):
                 envio = ("SIP/2.0 100 Trying\r\n\r\nSIP/2.0 180 Ring\r\n\r\n" +
                          "SIP/2.0 200 OK\r\n\r\n")
                 self.wfile.write(bytes(envio, 'utf-8'))
+                """
                 if Mensaje_Cliente[1] == 100 and Mensaje_Cliente == [180] and Mensaje_Cliente[7] == 200:
-                    if Mensaje_Cliente[0] == 'ACK':
-                        os.system("./mp32rtp -i " + IP_Cliente + " -p 23032 <" + audio)
+                """
+            elif Mensaje_Cliente[0] == 'ACK':
+                os.system("./mp32rtp -i " + IP_Cliente + " -p 23032 <" + audio)
             elif Mensaje_Cliente[0] == 'BYE':
                 # BYE --> se cierra la comunicación
                 envio = self.wfile.write(b'SIP/2.0 200 Ok\r\n\r\n')
