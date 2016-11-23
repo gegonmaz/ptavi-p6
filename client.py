@@ -51,9 +51,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
         # comprobaciones de metodos
         print(data.decode('utf-8'))
         Esperamos = mensajeServidor.split("\r\n\r\n")[0:-1]
-        if Esperamos == ['SIP/2.0 100 Trying', 'SIP/2.0 180 Ring', +
+        if Esperamos == ['SIP/2.0 100 Trying', 'SIP/2.0 180 Ring' +
                          'SIP/2.0 200 OK']:
-            EnvioCliente = ("ACK sip:" + IPServidor + " SIP/2.0\r\n")
+            EnvioCliente = ('ACK' ' sip:' + IPServidor + " SIP/2.0\r\n")
             my_socket.send(bytes(EnvioCliente, 'utf-8'))
     if str(sys.argv[1]) == 'BYE':
         nombreCliente = Cliente
