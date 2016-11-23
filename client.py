@@ -46,14 +46,14 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
         LINE = 'INVITE' + ' sip:' + Cliente + '@' + IPServidor + ' SIP/2.0\r\n'
 
         print("Enviando: " + LINE)
-        my_socket.send(bytes(LINE, 'utf-8') + b'\r\n')
+        my_socket.send(bytes(LINE, 'utf-8') + b'\r\n\r\n')
         data = my_socket.recv(1024)
         # comprobaciones de metodos
         print(data.decode('utf-8'))
         Esperamos = mensajeServidor.split("\r\n\r\n")[0:-1]
         if Esperamos == ['SIP/2.0 100 Trying', 'SIP/2.0 180 Ring' +
                          'SIP/2.0 200 OK']:
-            EnvioCliente = ('ACK' ' sip:' + IPServidor + " SIP/2.0\r\n")
+            EnvioCliente = ('ACK' + ' sip:' + IPServidor + " SIP/2.0\r\n")
             my_socket.send(bytes(EnvioCliente, 'utf-8'))
     if str(sys.argv[1]) == 'BYE':
         nombreCliente = Cliente
@@ -64,9 +64,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as my_socket:
         print("Enviando: " + LINE)
         my_socket.send(bytes(LINE, 'utf-8') + b'\r\n')
         data = my_socket.recv(1024)
-        # comprobaciones de metodos
-        print(data.decode('utf-8'))
-
         # Terminamos la conexion
         print('Recibido -- ', data.decode('utf-8'))
         print("Terminando socket...")
